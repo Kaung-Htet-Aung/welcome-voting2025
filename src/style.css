@@ -1,0 +1,142 @@
+.container {
+    margin: 0px;
+    padding: 0px;
+}
+
+.carousel-container {
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    
+}
+.img-container{
+   
+    width: 98%;
+    margin: 0 auto;
+   
+}
+.voteBtn{
+    position: absolute;
+    bottom: 10px;
+    /* Start hidden */
+    left: 50%;
+    transform: translateX(-50%);
+    color: black;
+    width: 30%;
+    font-size: 1rem;
+    font-weight: bold;
+    z-index: 2;
+    /* Smooth easing curve */
+}
+.footer-container {
+    width: 100%;
+    margin-top: 0px;
+    padding: 0px;
+    position: relative;
+    color: #fff;
+    height: 35vh;
+    background-color: #070F2B;
+}
+
+.inner-div {
+    width: 250px;
+    text-align: center;
+    padding: 15px;
+    background-color: #535C91 ;
+    top: -30px;
+    position: relative;
+    border-radius: 5px;
+    margin: 0 auto;
+}
+
+.outer-div {
+    margin-left: 100px;
+    position: relative;
+    width: 100%;
+   
+}
+
+.carousel-image {
+    width: 100%;
+    height: auto;
+    transition: transform 0.4s ease-in-out;
+}
+
+.carousel-image:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.carousel-text {
+    position: absolute;
+    bottom: -50px; /* Start hidden */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    width: 100%;
+    height: 115px;
+    font-size: 1rem;
+    font-weight: bold;
+    opacity: 0;
+    transition: all 1.8s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth easing curve */
+}
+
+.carousel-text.animate {
+    bottom: 6px; /* Visible position */
+    opacity: 1;
+}
+
+
+
+@media (max-width: 768px) {
+
+    .img-container{
+        width: 100%;
+        
+    }
+    .carousel-container{
+        margin-top: 0px;
+    }
+}
+
+
+
+nav {
+    padding: 4px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #424769;
+    position: relative;
+    height: 70px;
+    font-family:serif;
+}
+
+.logo {
+    color: #fff;
+}
+
+nav ul {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+nav ul li {
+    list-style-type: none;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.menu-icon {
+    display: none;
+}
+
+.menu-icon i {
+    color: #fff;
+    font-size: 30px;
+}
+
