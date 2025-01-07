@@ -3,13 +3,9 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import "./style.css";
 import "./Modal.css"
-import { Link,useParams } from "react-router-dom";
-import { Client, Databases ,Query} from 'appwrite';
-
-const client = new Client();
-client.setEndpoint('https://cloud.appwrite.io/v1').setProject('676e59c6000b84885e72');
-const database = new Databases(client);
-
+import {Navbar} from "./components/Navbar";
+import {account,database} from './appwrite';
+import { Query } from "appwrite";
 const responsive = {
   superLargeDesktop: { breakpoint: { max: 4000, min: 1024 }, items: 3 },
   desktop: { breakpoint: { max: 1024, min: 768 }, items: 3 },
@@ -69,6 +65,8 @@ const CustomRightArrow = ({ onClick }) => {
     </button>
   );
 };
+
+
 const Boy = () => {
   const [candidates, setCandidates] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -76,6 +74,7 @@ const Boy = () => {
   const [votedCandidates,setVotedCandidates]=useState([])
   const [candidateToVote, setCandidateToVote] = useState({});
   const [modal, setModal] = useState(false);
+  const [userId,setUserId]=useState(localStorage.getItem('session'));
   const [titles, setTitles] = useState(["King", "Attraction", "Smart"]) 
   const [selectedValue, setSelectedValue] = useState("king");
  // Update visible items based on screen size
@@ -91,24 +90,32 @@ const Boy = () => {
       setVisibleItems(1); // Mobile
     }
   };
-
+ async function logout() {
+    await account.deleteSession("current");
+    setUserId(null);
+  }
+ 
   const handleSlideChange = (currentSlide) => {
     setActiveIndex(currentSlide);
   };
- const userId="1";
+
+
  const fetchVotedCandidates = async (title) => {
     try {
+     
       const response = await database.listDocuments(
         "676ec63a00199012ab5d",
         "677b41bb003b1ea20928",
-        [Query.equal("userId", userId)]// Filter votes by user ID
+        [Query.equal("userId",userId)] //Filter votes by user ID
       );
-      setVotedCandidates(response.documents);  
+      setVotedCandidates(response.documents);
+      console.log(response.documents);
+        
       const votedTitles = response.documents.map(item => item.title);
       const availableTitles = titles.filter(title => !votedTitles.includes(title));
       setTitles(availableTitles)
       setSelectedValue(availableTitles[0])
-   
+      
     } catch (err) {
       console.error("Failed to fetch votes:", err);
     }
@@ -120,8 +127,13 @@ const Boy = () => {
     
   };
    const insertToAppwrite = async (updatedObject) => {
-    const { candidateId, userId, title } = updatedObject;
-    const votedObj = { candidateId, userId, title };
+    const { candidateId, title } = updatedObject;
+    const votedObj = {
+      candidateId,
+      userId,
+      title // Adding the selected value
+    };
+   
     try {
 
       const response = await database.createDocument(
@@ -130,8 +142,8 @@ const Boy = () => {
         "unique()", // Generate a unique document ID
         votedObj
       );
+      alert(`you have voted ${candidateId} for ${title} title`)
       fetchVotedCandidates(title)
-      
       
     } catch (error) {
       console.error("Error creating document:", error);
@@ -151,8 +163,6 @@ const Boy = () => {
 
     // Call insertToAppwrite with the updated object
     insertToAppwrite(votedObj);
-    
-      
     // Optionally close the modal
     setModal(false);
   }
@@ -165,6 +175,7 @@ const Boy = () => {
     document.body.classList.remove('active-modal')
   }
   useEffect(() => {
+   
     determineVisibleItems(); // Set on mount
     window.addEventListener("resize", determineVisibleItems); // Update on resize
 
@@ -174,7 +185,6 @@ const Boy = () => {
          setCandidates([
           {
             candidateId:"1",
-            userId:"1",
             imgSrc:"/images/1-zylh/IMG_4994.JPG",
             name:'Mg Zayar Lin Htet',
             section:"B",
@@ -375,17 +385,7 @@ const Boy = () => {
 
   return (
     <div className="container">
-       <nav>
-        <div className="logo">
-            <img src="./images/logo.webp" alt="" width={50} height={50} style={{lineHeight:50}}/>
-        </div>
-        <ul id="menuList">
-            <li><Link to="/">Boys</Link></li>
-            <li><Link to="/girl">Girls</Link></li>
-        </ul>
-      
-    </nav>
-
+      <Navbar/>
       <div className="carousel-container">
         <Carousel
           responsive={responsive}
@@ -399,7 +399,7 @@ const Boy = () => {
             <div key={index} style={{ position: "relative" }} className="img-container">
               <img src={candidate.imgSrc} className="carousel-image" alt={`Carousel Item ${index + 1}`} />
               <button className="voteBtn" onClick={()=>toggleModal(candidate)}  disabled={votedCandidates.some((vote) => vote.candidateId === candidate.candidateId)} >
-                 {votedCandidates.some((vote) => vote.candidateId === candidate.candidateId) ? "Voted" : "Vote"}
+                 {votedCandidates.some((vote) => vote.candidateId == candidate.candidateId) ? "Voted" : "Vote"}
               </button>
               <div
                 className={`carousel-text ${

@@ -82,7 +82,7 @@
 }
 
 .carousel-text.animate {
-    bottom: 6px; /* Visible position */
+    bottom: 0px; /* Visible position */
     opacity: 1;
 }
 
