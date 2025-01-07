@@ -69,7 +69,7 @@ const Votes = () => {
           <tbody>
             {votedCandidates.map((candidate) => (
               <tr key={candidate.$id}>
-                <td>{candidate.title || "N/A"}</td>
+                <td>{candidate.name || "N/A"}</td>
                 <td>{candidate.category || "N/A"}</td>
                 <td>{new Date(candidate.$createdAt).toLocaleDateString()}</td>
                 <td>
@@ -91,7 +91,7 @@ const Votes = () => {
           </tbody>
         </table>
       ) : (
-        <p style={{textAlign:'center',marginTop:'50px'}}>You haven't voted yet!</p>
+        <p style={{textAlign:'center',marginTop:'50px',color:'white'}}>You haven't voted yet!</p>
       )}
     </div>
   );

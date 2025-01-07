@@ -3,18 +3,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
-}
 
-.container {
+.login-container {
     position: relative;
     width: 850px;
     height: 550px;
@@ -23,6 +15,7 @@ body {
     box-shadow: 0 0 30px rgba(0, 0, 0, .2);
     overflow: hidden;
     margin: 20px;
+    margin: 0 auto;
 }
 
 .form-box {
@@ -40,7 +33,7 @@ body {
     transition: .6s ease-in-out 1.2s, visibility 0s 1s;
 }
 
-.container.active .form-box {
+.login-container.active .form-box {
     right: 50%;
 }
 
@@ -48,7 +41,7 @@ body {
     visibility: hidden;
 }
 
-.container.active .form-box.register {
+.login-container.active .form-box.register {
     visibility: visible;
 }
 
@@ -56,7 +49,7 @@ form {
     width: 100%;
 }
 
-.container h1 {
+.login-container h1 {
     font-size: 36px;
     margin: -10px 0;
 }
@@ -114,7 +107,7 @@ form {
     font-weight: 600;
 }
 
-.container p {
+.login-container p {
     font-size: 14.5px;
     margin: 15px 0;
 }
@@ -152,19 +145,13 @@ form {
     left: -250%;
     width: 300%;
     height: 100%;
-    background-image: url('./images/logo.webp');
-    background-size: cover;
-    background-repeat: no-repeat;
-    /* Ensure the image covers the div */
-    background-position: center center;
-    /* Center the image within the div */
-    background-attachment: fixed;
+    background-color:darkcyan;
     /* Keep the image fixed while scrolling */
     border-radius: 50px;
     z-index: 2;
 }
 
-.container.active .toggle-box::before {
+.login-container.active .toggle-box::before {
     left: 50%;
 }
 
@@ -186,7 +173,7 @@ form {
     transition-delay: 1.2s;
 }
 
-.container.active .toggle-panel.toggle-left {
+.login-container.active .toggle-panel.toggle-left {
     left: -50%;
     transition-delay: .6s;
 }
@@ -196,7 +183,7 @@ form {
     transition-delay: .6s;
 }
 
-.container.active .toggle-panel.toggle-right {
+.login-container.active .toggle-panel.toggle-right {
     right: 0;
     transition-delay: 1.2s;
 }
@@ -214,10 +201,10 @@ form {
 }
 
 @media screen and (max-width: 650px) {
-    .container {
+    .login-container {
         height: calc(100vh - 40px);
         margin: auto;
-        width: 95vw;
+        width: 100vw;
     }
 
     .form-box {
@@ -227,7 +214,7 @@ form {
         
     }
 
-    .container.active .form-box {
+    .login-container.active .form-box {
         right: 0;
         bottom: 30%;
     }
@@ -240,7 +227,7 @@ form {
         border-radius: 20vw;
     }
 
-    .container.active .toggle-box::before {
+    .login-container.active .toggle-box::before {
         left: 0;
         top: 70%;
     }
@@ -254,7 +241,7 @@ form {
         top: 0;
     }
 
-    .container.active .toggle-panel.toggle-left {
+    .login-container.active .toggle-panel.toggle-left {
         top: -30%;
         left: 0;
     }
@@ -264,7 +251,7 @@ form {
         bottom: -30%;
     }
 
-    .container.active .toggle-panel.toggle-right {
+    .login-container.active .toggle-panel.toggle-right {
         bottom: 0;
     }
 }

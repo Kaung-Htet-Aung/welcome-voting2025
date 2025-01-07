@@ -1,38 +1,42 @@
 import React, { useState } from "react";
 import {account } from "../appwrite";
-
+import { Navigate } from "react-router-dom";
+import '../login.css'
 const LoginRegisterPage = () => {
-  const [isLogin, setIsLogin] = useState(true);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
  
+ const isLoggedIn = !!localStorage.getItem("session");
 
-  const toggleForm = () => {
-    setIsLogin(!isLogin);
-  };
-
+  if (isLoggedIn) {
+    return <Navigate to="/" />;
+  }
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       // Log in the user
+      console.log(email,password);
+      
      const user= await account.createEmailPasswordSession(email,password)
      localStorage.setItem("session", user.$id);
       window.location.replace("/");
-      alert("Login successful!");
-
+     
       // Redirect or perform further actions
     } catch (err) {
-      setError(err.message);
+      console.log(err);
+      
+      setError("Sorry! Incorrect email or password,try again or contact us");
     }
   };
 
   return (
-    <div className="container">
+    <div className="login-container">
       <div className="form-box login">
         <form onSubmit={handleLogin}>
           <h1>Login</h1>
-          {error && <p className="error">{error}</p>}
+          {error && <p className="error" style={{color:'red'}}>{error}</p>}
           <div className="input-box">
             <input
               type="email"
@@ -60,11 +64,10 @@ const LoginRegisterPage = () => {
       </div>
       <div className="toggle-box">
         <div className="toggle-panel">
-          <h1>Hello, Welcome!</h1>
-          <p>Don't have an account?</p>
-          <button onClick={toggleForm} className="btn">
-            Register
-          </button>
+          <img src="./images/logo.webp" width="60" height="60"alt="" />
+          
+          <h1 style={{marginTop:10}}>UCSMGY</h1>
+          <p>2024-2025 fresher-welcome</p>
         </div>
       </div>
     </div>

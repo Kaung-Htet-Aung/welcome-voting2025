@@ -91,7 +91,8 @@ const Boy = () => {
     }
   };
  async function logout() {
-    await account.deleteSession("current");
+  account.deleteSession('current')
+    localStorage.removeItem('session');
     setUserId(null);
   }
  
@@ -408,8 +409,11 @@ const Boy = () => {
               >
                 <p>{candidate.name}</p>
                 <p>Contestant No-{candidate.no}</p>
+                 <p>Height-5' 8"</p>
               </div>
+             
             </div>
+            
           ))}
         </Carousel>
           {modal && (
@@ -424,7 +428,7 @@ const Boy = () => {
                 </option>
       ))}
           </select>
-
+            
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
               perferendis suscipit officia recusandae, eveniet quaerat assumenda
@@ -439,6 +443,7 @@ const Boy = () => {
              <button className="" onClick={handleVote}>
               Vote
             </button>
+            
           </div>
         </div>
       )}
@@ -448,3 +453,5 @@ const Boy = () => {
 };
 
 export default Boy;
+
+

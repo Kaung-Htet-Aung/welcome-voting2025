@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef, } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import "./style.css";
-import { Link,useParams } from "react-router-dom";
+import "./Modal.css"
+import {Navbar} from "./components/Navbar";
+import {account,database} from './appwrite';
+import { Query } from "appwrite";
 const responsive = {
   superLargeDesktop: { breakpoint: { max: 4000, min: 1024 }, items: 3 },
   desktop: { breakpoint: { max: 1024, min: 768 }, items: 3 },
@@ -62,12 +65,19 @@ const CustomRightArrow = ({ onClick }) => {
     </button>
   );
 };
+
+
 const Girl = () => {
-  const [images, setImages] = useState([]);
+  const [candidates, setCandidates] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [visibleItems, setVisibleItems] = useState(1);
- 
-  // Update visible items based on screen size
+  const [votedCandidates,setVotedCandidates]=useState([])
+  const [candidateToVote, setCandidateToVote] = useState({});
+  const [modal, setModal] = useState(false);
+  const [userId,setUserId]=useState(localStorage.getItem('session'));
+  const [titles, setTitles] = useState(["King", "Attraction", "Smart"]) 
+  const [selectedValue, setSelectedValue] = useState("king");
+ // Update visible items based on screen size
   const determineVisibleItems = () => {
     const width = window.innerWidth;
     if (width > 1024) {
@@ -80,23 +90,99 @@ const Girl = () => {
       setVisibleItems(1); // Mobile
     }
   };
-
+ async function logout() {
+    await account.deleteSession("current");
+    setUserId(null);
+  }
+ 
   const handleSlideChange = (currentSlide) => {
     setActiveIndex(currentSlide);
   };
- const handleGetValue = () => {
-    const paperContent = paperRef.current.innerText; // Get plain text content
-    console.log("Paper Content:", paperContent);
+
+
+ const fetchVotedCandidates = async (title) => {
+    try {
+     
+      const response = await database.listDocuments(
+        "676ec63a00199012ab5d",
+        "677b41bb003b1ea20928",
+        [Query.equal("userId",userId)] //Filter votes by user ID
+      );
+      setVotedCandidates(response.documents);
+      console.log(response.documents);
+        
+      const votedTitles = response.documents.map(item => item.title);
+      const availableTitles = titles.filter(title => !votedTitles.includes(title));
+      setTitles(availableTitles)
+      setSelectedValue(availableTitles[0])
+      
+    } catch (err) {
+      console.error("Failed to fetch votes:", err);
+    }
   };
 
+  const toggleModal = (candidate) => {
+    setModal(!modal)
+    setCandidateToVote(candidate)
+    
+  };
+   const insertToAppwrite = async (updatedObject) => {
+    const { candidateId, title } = updatedObject;
+    const votedObj = {
+      candidateId,
+      userId,
+      title // Adding the selected value
+    };
+   
+    try {
+
+      const response = await database.createDocument(
+        "676ec63a00199012ab5d", // Replace with your Database ID
+        "677b41bb003b1ea20928", // Replace with your Collection ID
+        "unique()", // Generate a unique document ID
+        votedObj
+      );
+      alert(`you have voted ${candidateId} for ${title} title`)
+      fetchVotedCandidates(title)
+      
+    } catch (error) {
+      console.error("Error creating document:", error);
+    }
+  };
+  const handleChange=(e)=>{
+     setSelectedValue(e.target.value);
+  }
+
+  const handleVote = () => {
+    
+    if (selectedValue && candidateToVote) {
+    const votedObj = {
+      ...candidateToVote,
+      title: selectedValue, // Adding the selected value
+    };
+
+    // Call insertToAppwrite with the updated object
+    insertToAppwrite(votedObj);
+    // Optionally close the modal
+    setModal(false);
+  }
+  
+      
+  };
+   if(modal) {
+    document.body.classList.add('active-modal')
+  } else {
+    document.body.classList.remove('active-modal')
+  }
   useEffect(() => {
+   
     determineVisibleItems(); // Set on mount
     window.addEventListener("resize", determineVisibleItems); // Update on resize
 
     // Set images based on screen size
-    const updateImages = () => {
+     const updateCandidate = () => {
       if (window.innerWidth > 768) {
-         setImages([
+         setCandidates([
           {
             imgSrc:"/images/girls/1-sye/IMG_50281.JPG",
             name:'Ma Shwe Yee Eaint',
@@ -161,7 +247,7 @@ const Girl = () => {
         ]);
        
       } else {
-       setImages([
+       setCandidates([
           {
             imgSrc:"/images/girls/1-sye/IMG_5028.JPG",
             name:'Ma Shwe Yee Eaint',
@@ -227,8 +313,8 @@ const Girl = () => {
        
       }
     };
-
-    updateImages(); // Set on mount
+    fetchVotedCandidates()
+    updateCandidate(); // Set on mount
  
     return () => {
       window.removeEventListener("resize", determineVisibleItems);
@@ -236,19 +322,11 @@ const Girl = () => {
     }; // Cleanup
   }, []);
 
+
+
   return (
     <div className="container">
-       <nav>
-        <div className="logo">
-            <img src="./images/logo.webp" alt="" width={50} height={50} style={{lineHeight:50}}/>
-        </div>
-        <ul id="menuList">
-            <li><Link to="/">Boys</Link></li>
-            <li><Link to="/girl">Girls</Link></li>
-        </ul>
-      
-    </nav>
-
+      <Navbar/>
       <div className="carousel-container">
         <Carousel
           responsive={responsive}
@@ -258,35 +336,58 @@ const Girl = () => {
           customLeftArrow={<CustomLeftArrow/>}
           afterChange={(previousSlide, { currentSlide }) => handleSlideChange(currentSlide)}
         >
-          {images.map((candidate, index) => (
+          {candidates.map((candidate, index) => (
             <div key={index} style={{ position: "relative" }} className="img-container">
               <img src={candidate.imgSrc} className="carousel-image" alt={`Carousel Item ${index + 1}`} />
+              <button className="voteBtn" onClick={()=>toggleModal(candidate)}  disabled={votedCandidates.some((vote) => vote.candidateId === candidate.candidateId)} >
+                 {votedCandidates.some((vote) => vote.candidateId == candidate.candidateId) ? "Voted" : "Vote"}
+              </button>
               <div
                 className={`carousel-text ${
                   index >= activeIndex && index < activeIndex + visibleItems ? "animate" : ""
                 }`}
               >
                 <p>{candidate.name}</p>
-                <p>Section-{candidate.section}</p>
                 <p>Contestant No-{candidate.no}</p>
               </div>
             </div>
           ))}
         </Carousel>
-        <div className="footer-container">
-               <div id="outer-div"> 
-                  
-                   <div className="inner-div">2024-2025 UCSMGY FRESHER WELCOME</div>
-                   <div style={{width:'80%',margin:'0 auto'}}>
-                     <p>
-"Welcome, freshers! It’s time to vote for the titles of this batch. Let’s make this a fun start to your journey here, and may the best candidates win! Get ready to enjoy every moment!"                      </p>
-                     
-                   </div>
-                </div> 
-         </div>
+          {modal && (
+        <div className="modal">
+          <div onClick={toggleModal} className="overlay"></div>
+          <div className="modal-content">
+            <h2>Hello Modal</h2>
+          <select value={selectedValue} onChange={handleChange}>
+                {titles.map((title) => (
+                    <option key={title} value={title}>
+                    {title}
+                </option>
+      ))}
+          </select>
+
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
+              perferendis suscipit officia recusandae, eveniet quaerat assumenda
+              id fugit, dignissimos maxime non natus placeat illo iusto!
+              Sapiente dolorum id maiores dolores? Illum pariatur possimus
+              quaerat ipsum quos molestiae rem aspernatur dicta tenetur. Sunt
+              placeat tempora vitae enim incidunt porro fuga ea.
+            </p>
+            <button className="close-modal" onClick={toggleModal}>
+              CLOSE
+            </button>
+             <button className="" onClick={handleVote}>
+              Vote
+            </button>
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );
 };
 
 export default Girl;
+
+
