@@ -55,7 +55,7 @@ const Votes = () => {
     <div>
      <Navbar/>
       {loading ? (
-        <p style={{textAlign:'center'}}>Loading...</p>
+        <p style={{textAlign:'center',color:'white'}}>Loading...</p>
       ) : votedCandidates.length > 0 ? (
         <table id="customers">
           <thead>
