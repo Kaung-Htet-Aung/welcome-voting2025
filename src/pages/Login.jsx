@@ -25,7 +25,7 @@ const LoginRegisterPage = () => {
      
       // Redirect or perform further actions
     } catch (err) {
-      setError("Sorry! Incorrect email or password,try again or contact us");
+      setError(err.message);
       console.log(err);
       
     }
