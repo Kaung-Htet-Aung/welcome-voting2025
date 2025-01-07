@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {account } from "../appwrite";
 import { Navigate } from "react-router-dom";
 import '../login.css'
-const LoginRegisterPage = () => {
+const LoginPage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,8 +19,11 @@ const LoginRegisterPage = () => {
       // Log in the user
       console.log(email,password);
       
-     const user= await account.createEmailPasswordSession(email,password)
+    await account.createEmailPasswordSession(email,password)
+     const user = await account.get();
      localStorage.setItem("session", user.$id);
+     console.log(user.$id);
+     
       window.location.replace("/");
      
       // Redirect or perform further actions
@@ -74,4 +77,4 @@ const LoginRegisterPage = () => {
   );
 };
 
-export default LoginRegisterPage;
+export default LoginPage;

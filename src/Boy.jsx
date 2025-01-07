@@ -443,7 +443,7 @@ const Boy = () => {
              <button className="" onClick={handleVote}>
               Vote
             </button>
-            
+             <button onClick={logout}>logout</button>
           </div>
         </div>
       )}
