@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import {account } from "../appwrite";
 import { Navigate } from "react-router-dom";
 import '../login.css'
-const LoginPage = () => {
+const LoginRegisterPage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
  
- const isLoggedIn = !!localStorage.getItem("session");
+ const isLoggedIn = localStorage.getItem("session");
 
   if (isLoggedIn) {
     return <Navigate to="/" />;
@@ -17,20 +17,17 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       // Log in the user
-      console.log(email,password);
+      await account.createEmailPasswordSession(email,password)
+      const user=await account.get()
       
-    await account.createEmailPasswordSession(email,password)
-     const user = await account.get();
-     localStorage.setItem("session", user.$id);
-     console.log(user.$id);
-     
+      localStorage.setItem("session", user.$id);
       window.location.replace("/");
      
       // Redirect or perform further actions
     } catch (err) {
+      setError("Sorry! Incorrect email or password,try again or contact us");
       console.log(err);
       
-      setError("Sorry! Incorrect email or password,try again or contact us");
     }
   };
 
@@ -77,4 +74,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default LoginRegisterPage;

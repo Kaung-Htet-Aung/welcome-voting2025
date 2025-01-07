@@ -22,7 +22,7 @@ const App = () => {
               element={
               <ProtectedRoute>
                  <Boy/>
-               </ProtectedRoute>
+              </ProtectedRoute>
                }
            />
            <Route
