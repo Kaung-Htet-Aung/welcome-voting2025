@@ -28,25 +28,25 @@ const App = () => {
            <Route
               path="/girl"
               element={
-              <ProtectedRoute>
+            
                  <Girl/>
-               </ProtectedRoute>
+              
                }
            />
               <Route
               path="/girl"
               element={
-              <ProtectedRoute>
+              
                  <Girl/>
-               </ProtectedRoute>
+             
                }
            />
             <Route
               path="/votes"
               element={
-              <ProtectedRoute>
+              
                  <Votes/>
-               </ProtectedRoute>
+               
                }
            />
         </Routes>

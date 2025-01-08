@@ -12,59 +12,9 @@ const responsive = {
   tablet: { breakpoint: { max: 768, min: 464 }, items: 2 },
   mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
 };
-const CustomLeftArrow = ({ onClick }) => {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        position: "absolute",
-        left: "15px",
-        top: "45.5%",
-        transform: "translateY(-50%)",
-        background: 'rgba(0, 0, 0, 0.5)',
-        color: "white",
-        border: "none",
-        borderRadius: "50%",
-        width: "30px",
-        height: "30px",
-        cursor: "pointer",
-        zIndex: 1000,
-        display: "flex", // Flexbox for centering
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <img src="./images/arrow.png" alt="" width={'15px'} height={'15px'}/>
-    </button>
-  );
-};
 
-const CustomRightArrow = ({ onClick }) => {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        position: "absolute",
-        right: "15px",
-        top: "45%",
-        transform: "translateY(-50%)",
-        background: 'rgba(0, 0, 0, 0.5)', /* Transparent background */
-        color: "white",
-        border: "none",
-        borderRadius: "50%",
-        width: "30px",
-        height: "30px",
-        cursor: "pointer",
-        zIndex: 1000,
-        display: "flex", // Flexbox for centering
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <img src="./images/right-arrow.png" alt="" width={'15px'} height={'15px'}/>
-    </button>
-  );
-};
+
+
 
 
 const Boy = () => {
@@ -83,6 +33,58 @@ const Boy = () => {
    const votingStartTime = new Date("2025-01-07T22:51:00");
     const votingEndTime = new Date("2025-01-09T12:16:00");
  // Update visible items based on screen size
+ const CustomLeftArrow = ({ onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        position: "absolute",
+        left: "15px",
+        top: "45.5%",
+        transform: "translateY(-50%)",
+        background: 'rgba(0, 0, 0, 0.5)',
+        color: "white",
+        border: "none",
+        borderRadius: "50%",
+        width: "30px",
+        height: "30px",
+        cursor: "pointer",
+         zIndex: modal ? -5 : 7,
+        display: "flex", // Flexbox for centering
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <img src="./images/arrow.png" alt="" width={'15px'} height={'15px'}/>
+    </button>
+  );
+};
+const CustomRightArrow = ({ onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        position: "absolute",
+        right: "15px",
+        top: "45%",
+        transform: "translateY(-50%)",
+        background: 'rgba(0, 0, 0, 0.5)', /* Transparent background */
+        color: "white",
+        border: "none",
+        borderRadius: "50%",
+        width: "30px",
+        height: "30px",
+        cursor: "pointer",
+         zIndex: modal ? -5 : 7,
+        display: "flex", // Flexbox for centering
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <img src="./images/right-arrow.png" alt="" width={'15px'} height={'15px'}/>
+    </button>
+  );
+};
   const determineVisibleItems = () => {
     const width = window.innerWidth;
     if (width > 1024) {
@@ -470,29 +472,35 @@ useEffect(() => {
         <div className="modal">
           <div onClick={toggleModal} className="overlay"></div>
           <div className="modal-content">
-            <h2>Hello Modal</h2>
-          <select value={selectedValue} onChange={handleChange}>
-                {titles.map((title) => (
-                    <option key={title} value={title}>
-                    {title}
-                </option>
-      ))}
-          </select>
-            
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
-              perferendis suscipit officia recusandae, eveniet quaerat assumenda
-              id fugit, dignissimos maxime non natus placeat illo iusto!
-              Sapiente dolorum id maiores dolores? Illum pariatur possimus
-              quaerat ipsum quos molestiae rem aspernatur dicta tenetur. Sunt
-              placeat tempora vitae enim incidunt porro fuga ea.
-            </p>
+            <h2>Select the title </h2>
+            <div>
+      <form>
+     {titles.map((title) => (
+      <div class="radiobtn">
+		       <input type="radio"
+				  	 name="title"
+             value={title}  
+             id={title}
+             checked={selectedValue == title} 
+             onChange={handleChange} 
+            />
+		  <label htmlFor={`${title}`}>{title}</label>
+
+	  </div>
+     
+    ))}</form></div>
+
             <button className="close-modal" onClick={toggleModal}>
-              CLOSE
+              X
             </button>
-             <button className="" onClick={handleVote}  >
-                 vote
-            </button>
+            <div class="button-wrapper primary">  
+               <button class="button" type="button" onClick={handleVote}>
+                   Vote Her
+               <span class="button-inner-wrapper">    
+               <span class="button-inner"></span>
+               </span>
+             </button>
+            </div>
           </div>
         </div>
       )}

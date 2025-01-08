@@ -12,32 +12,7 @@ const responsive = {
   tablet: { breakpoint: { max: 768, min: 464 }, items: 2 },
   mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
 };
-const CustomLeftArrow = ({ onClick }) => {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        position: "absolute",
-        left: "15px",
-        top: "45.5%",
-        transform: "translateY(-50%)",
-        background: 'rgba(0, 0, 0, 0.5)',
-        color: "white",
-        border: "none",
-        borderRadius: "50%",
-        width: "30px",
-        height: "30px",
-        cursor: "pointer",
-        zIndex: 1000,
-        display: "flex", // Flexbox for centering
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <img src="./images/arrow.png" alt="" width={'15px'} height={'15px'}/>
-    </button>
-  );
-};
+
 
 const CustomRightArrow = ({ onClick }) => {
   return (
@@ -55,7 +30,7 @@ const CustomRightArrow = ({ onClick }) => {
         width: "30px",
         height: "30px",
         cursor: "pointer",
-        zIndex: 1000,
+        zIndex: modal ? -5 : 7,
         display: "flex", // Flexbox for centering
         alignItems: "center",
         justifyContent: "center",
@@ -104,7 +79,58 @@ const Boy = () => {
     setActiveIndex(currentSlide);
   };
 
-
+const CustomLeftArrow = ({ onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        position: "absolute",
+        left: "15px",
+        top: "45.5%",
+        transform: "translateY(-50%)",
+        background: 'rgba(0, 0, 0, 0.5)',
+        color: "white",
+        border: "none",
+        borderRadius: "50%",
+        width: "30px",
+        height: "30px",
+        cursor: "pointer",
+        zIndex: modal ? -5 : 7,
+        display: "flex", // Flexbox for centering
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <img src="./images/arrow.png" alt="" width={'15px'} height={'15px'}/>
+    </button>
+  );
+};
+const CustomRightArrow = ({ onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        position: "absolute",
+        right: "15px",
+        top: "45%",
+        transform: "translateY(-50%)",
+        background: 'rgba(0, 0, 0, 0.5)', /* Transparent background */
+        color: "white",
+        border: "none",
+        borderRadius: "50%",
+        width: "30px",
+        height: "30px",
+        cursor: "pointer",
+        zIndex: modal ? -5 : 7,
+        display: "flex", // Flexbox for centering
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <img src="./images/right-arrow.png" alt="" width={'15px'} height={'15px'}/>
+    </button>
+  );
+};
  const fetchVotedCandidates = async (title) => {
     try {
      
@@ -528,6 +554,24 @@ useEffect(() => {
           : timeLeft
         }
       </h2>
+      <div class="timer">
+            <div class="sub_timer">
+                <h1 id="day" class="digit">00</h1>
+                <p class="digit_name">Days</p>
+            </div>
+            <div class="sub_timer">
+                <h1 id="hour" class="digit">00</h1>
+                <p class="digit_name">Hours</p>
+            </div>
+            <div class="sub_timer">
+                <h1 id="min" class="digit">00</h1>
+                <p class="digit_name">Minutes</p>
+            </div>
+            <div class="sub_timer">
+                <h1 id="sec" class="digit">00</h1>
+                <p class="digit_name">Seconds</p>
+            </div>
+        </div>
       
     </div>
   );

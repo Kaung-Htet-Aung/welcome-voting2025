@@ -75,7 +75,7 @@
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     width: 100%;
-    height: 100px;
+    height: 110px;
     font-size: 1rem;
     font-weight: bold;
     opacity: 0;
@@ -149,7 +149,7 @@ nav ul li a {
 form {
     max-width: 250px;
     position: relative;
-    margin: 50px auto 0;
+    margin: 35px auto 0;
     font-size: 15px;
 }
 
@@ -378,3 +378,5 @@ form {
   .button-wrapper.secondary .button-inner {
       background-image: linear-gradient(to right, #67666e, #0f0d21);
   }
+
+  

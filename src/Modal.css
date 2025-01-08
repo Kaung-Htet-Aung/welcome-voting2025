@@ -21,7 +21,7 @@ body.active-modal {
 }
 
 .overlay {
-    
+   
     background: rgba(49, 49, 49, 0.8);
 }
 
@@ -36,6 +36,9 @@ body.active-modal {
     border-radius: 3px;
     width: 95%;
     height: 60vh;
+}
+.modal-content h2{
+    padding-top: 30px;
 }
 
 .close-modal {

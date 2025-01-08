@@ -60,9 +60,9 @@ const Votes = () => {
         <table id="customers">
           <thead>
             <tr>
-              <th>Candidate Name</th>
-              <th>Category</th>
-              <th>Date Voted</th>
+              <th>Name</th>
+              <th>Title</th>
+              <th>Date</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -70,7 +70,7 @@ const Votes = () => {
             {votedCandidates.map((candidate) => (
               <tr key={candidate.$id}>
                 <td>{candidate.name || "N/A"}</td>
-                <td>{candidate.category || "N/A"}</td>
+                <td>{candidate.title || "N/A"}</td>
                 <td>{new Date(candidate.$createdAt).toLocaleDateString()}</td>
                 <td>
                   <button
