@@ -488,23 +488,16 @@ useEffect(() => {
         <div className="modal">
           <div onClick={toggleModal} className="overlay"></div>
           <div className="modal-content">
-            <h2>Hello Modal</h2>
-          <select value={selectedValue} onChange={handleChange}>
+            <h2>Select the title </h2>
+            <div className="select">
+               <select value={selectedValue} onChange={handleChange}>
                 {titles.map((title) => (
                     <option key={title} value={title}>
                     {title}
                 </option>
       ))}
           </select>
-            
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
-              perferendis suscipit officia recusandae, eveniet quaerat assumenda
-              id fugit, dignissimos maxime non natus placeat illo iusto!
-              Sapiente dolorum id maiores dolores? Illum pariatur possimus
-              quaerat ipsum quos molestiae rem aspernatur dicta tenetur. Sunt
-              placeat tempora vitae enim incidunt porro fuga ea.
-            </p>
+            </div>
             <button className="close-modal" onClick={toggleModal}>
               CLOSE
             </button>
