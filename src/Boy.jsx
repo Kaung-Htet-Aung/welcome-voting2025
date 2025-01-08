@@ -489,8 +489,8 @@ useEffect(() => {
           <div onClick={toggleModal} className="overlay"></div>
           <div className="modal-content">
             <h2>Select the title </h2>
-            <div className="box">
-               <select value={selectedValue} onChange={handleChange}>
+            <div className="select">
+          <select value={selectedValue} onChange={handleChange}>
                 {titles.map((title) => (
                     <option key={title} value={title}>
                     {title}
