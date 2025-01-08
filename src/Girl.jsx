@@ -81,7 +81,7 @@ const Boy = () => {
   const [loading, setLoading] = useState(false);
    const [timeLeft, setTimeLeft] = useState(""); 
    const votingStartTime = new Date("2025-01-07T22:51:00");
-    const votingEndTime = new Date("2025-01-09T24:13:00");
+    const votingEndTime = new Date("2025-01-09T12:16:00");
  // Update visible items based on screen size
   const determineVisibleItems = () => {
     const width = window.innerWidth;
