@@ -1,71 +1,48 @@
-:root {
-    --background-gradient: linear-gradient(178deg, #ffff33 10%, #3333ff);
-    --gray: #34495e;
-    --darkgray: #2c3e50;
+
+.box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-select {
-    appearance: none;
-    outline: 10px red;
-    border: 0;
-    box-shadow: none;
-    flex: 1;
-    padding: 0 1em;
-    color: #fff;
-    background-color: var(--darkgray);
-    background-image: none;
-    cursor: pointer;
-    width: 100%;
-    /* Ensure it matches the container */
-    box-sizing: border-box;
-    /* Include padding/border in width */
+.box select {
+    background-color: #0563af;
+    color: white;
+    padding: 12px;
+    width: 250px;
+    border: none;
+    font-size: 20px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    -webkit-appearance: button;
+    appearance: button;
+    outline: none;
 }
 
-.select {
-    position: relative;
-    display: flex;
-    width: 20em;
-    height: 3em;
-    border-radius: .25em;
-    overflow: hidden;
-}
-
-select option {
-    width: 100%;
-    /* Ensures options match select width */
-}
-
-/* Remove IE arrow */
-select::-ms-expand {
-    display: none;
-}
-
-/* Custom Select wrapper */
-
-
-/* Arrow */
-.select::after {
-    content: '\25BC';
+.box::before {
+    content: "\f13a";
+    font-family: FontAwesome;
     position: absolute;
     top: 0;
     right: 0;
-    padding: 1em;
-    background-color: #34495e;
-    transition: .25s all ease;
+    width: 20%;
+    height: 100%;
+    text-align: center;
+    font-size: 28px;
+    line-height: 45px;
+    color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.1);
     pointer-events: none;
 }
 
-/* Transition */
-.select:hover::after {
-    color: #f39c12;
+.box:hover::before {
+    color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Other styles*/
-
-
-
-/* 가운데정렬 - position,transform*/
-
+.box select option {
+    padding: 30px;
+}
 
 .container {
     margin: 0px;
