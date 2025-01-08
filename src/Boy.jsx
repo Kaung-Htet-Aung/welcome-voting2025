@@ -76,7 +76,7 @@ const Boy = () => {
   const [modal, setModal] = useState(false);
   const [userId,setUserId]=useState(localStorage.getItem('session'));
   const [titles, setTitles] = useState(["King", "Attraction", "Style"]) 
-  const [selectedValue, setSelectedValue] = useState("king");
+  const [selectedValue, setSelectedValue] = useState("King");
   const [isVotingOpen, setIsVotingOpen] = useState(false); // Voting status
   const [loading, setLoading] = useState(false);
    const [timeLeft, setTimeLeft] = useState(""); 
@@ -489,19 +489,34 @@ useEffect(() => {
           <div onClick={toggleModal} className="overlay"></div>
           <div className="modal-content">
             <h2>Select the title </h2>
-            <div className="select">
-          <select value={selectedValue} onChange={handleChange}>
-                {titles.map((title) => (
-                    <option key={title} value={title}>
-                    {title}
-                </option>
-      ))}
-          </select>
-            </div>
+            <div>
+      <form>
+     {titles.map((title) => (
+      <div class="radiobtn">
+		       <input type="radio"
+				  	 name="title"
+             value={title}  
+             id={title}
+             checked={selectedValue == title} 
+             onChange={handleChange} 
+            />
+		  <label htmlFor={`${title}`}>{title}</label>
+
+	  </div>
+     
+    ))}</form></div>
+
             <button className="close-modal" onClick={toggleModal}>
               X
             </button>
-             
+            <div class="button-wrapper primary">  
+             <button class="button" type="button" onClick={handleVote}>
+                   Vote Him
+               <span class="button-inner-wrapper">    
+               <span class="button-inner"></span>
+               </span>
+             </button>
+</div>
           </div>
         </div>
       )}
