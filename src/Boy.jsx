@@ -499,11 +499,9 @@ useEffect(() => {
           </select>
             </div>
             <button className="close-modal" onClick={toggleModal}>
-              CLOSE
+              X
             </button>
-             <button className="" onClick={handleVote}  >
-                 vote
-            </button>
+             
           </div>
         </div>
       )}
