@@ -21,16 +21,20 @@ const App = () => {
           <Route
               path="/"
               element={
-                   
-                    <Boy/>             
+                   <ProtectedRoute>
+                      <Boy/> 
+                   </ProtectedRoute>
+                                
               
                }
            />
            <Route
               path="/girl"
               element={
-               
-                    <Girl/>             
+                  <ProtectedRoute>
+                      <Girl/> 
+                   </ProtectedRoute>
+                                  
                
                }
            />
@@ -39,7 +43,10 @@ const App = () => {
               path="/votes"
               element={
                  
-                    <Votes/>             
+                       <ProtectedRoute>
+                      <Votes/> 
+                   </ProtectedRoute>
+                                   
                
                }
            />
