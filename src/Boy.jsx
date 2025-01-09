@@ -56,7 +56,7 @@ const Boy = () => {
   const [loading, setLoading] = useState(false);
    const [timeLeft, setTimeLeft] = useState(""); 
    const votingStartTime = new Date("2025-01-07T22:51:00");
-    const votingEndTime = new Date("2025-01-09T12:16:00");
+    const votingEndTime = new Date("2025-01-10T12:16:00");
  // Update visible items based on screen size
   const determineVisibleItems = () => {
     const width = window.innerWidth;
@@ -135,8 +135,8 @@ const CustomRightArrow = ({ onClick }) => {
     try {
      
       const response = await database.listDocuments(
-        "676ec63a00199012ab5d",
-        "677b41bb003b1ea20928",
+        "6779a6320039942a4d7c",
+        "677f96960019591e0088",
         [Query.equal("userId",userId)] //Filter votes by user ID
       );
       
@@ -175,11 +175,33 @@ const CustomRightArrow = ({ onClick }) => {
     try {
 
       const response = await database.createDocument(
-        "676ec63a00199012ab5d", // Replace with your Database ID
-        "677b41bb003b1ea20928", // Replace with your Collection ID
+        "6779a6320039942a4d7c", // Replace with your Database ID
+        "677f96960019591e0088", // Replace with your Collection ID
         "unique()", // Generate a unique document ID
         votedObj
       );
+
+       const candidateDoc = await database.listDocuments(
+        "6779a6320039942a4d7c",
+        "677f97aa0002f6d9402e",
+        [
+          Query.equal("candidateId",candidateId),
+          Query.equal("category", "boy")   
+
+        ] //Filter votes by user ID
+      );
+        const doc = candidateDoc.documents[0];
+  
+    // Step 3: Update the candidate's count
+        await database.updateDocument(
+           "6779a6320039942a4d7c", // Replace with your Database ID
+           "677f97aa0002f6d9402e", // Replace with your Candidate Collection ID
+           doc.$id, // The document ID of the candidate
+          {
+            votes: doc.votes + 1, // Increment votes by 1
+          }
+    );
+    
       alert(`You have voted ${name} for ${title} title!`)
       fetchVotedCandidates(title)
       
@@ -231,7 +253,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"B",
             category:'boy',
             no:1,
-            height:'5\' 8"'
+            height:'6\' 2"'
           
           },
            {
@@ -242,7 +264,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"A",
             category:'boy',
             no:2,
-            height:'5\' 8"'
+            height:'6\''
           },
            {
             candidateId:"3",
@@ -252,7 +274,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"B",
             category:'boy',
             no:3,
-            height:'5\' 8"'
+            height:'5\' 6"'
           },
            {
             candidateId:"4",
@@ -262,7 +284,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"B",
             category:'boy',
             no:4,
-            height:'5\' 8"'
+            height:'5\' 7"'
           },
            {
             candidateId:"5",
@@ -272,7 +294,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"C",
             category:'boy',
             no:5,
-            height:'5\' 8"'
+            height:'5\' 6"'
           },
            {
             candidateId:"6",
@@ -282,7 +304,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"A",
              category:'boy',
             no:6,
-            height:'5\' 8"'
+            height:'5\' 6"'
           },
            {
             candidateId:"7",
@@ -292,7 +314,7 @@ const CustomRightArrow = ({ onClick }) => {
             category:'boy',
             section:"B",
             no:7,
-            height:'5\' 8"'
+            height:'5\' 6"'
           },
            {
             candidateId:"8",
@@ -302,7 +324,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"C",
             category:'boy',
             no:8,
-            height:'5\' 8"'
+            height:'5\' 6"'
           },
            {
             candidateId:"9",
@@ -312,7 +334,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"B",
             category:'boy',
             no:9,
-            height:'5\' 8"'
+            height:'5\' 6"'
           },
            {
             candidateId:"10",
@@ -322,7 +344,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"B",
             category:'boy',
             no:10,
-            height:'5\' 8"'
+            height:'5\' 5"'
           },
          
         ]);
@@ -337,7 +359,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"B",
             category:'boy',
             no:1,
-            height:'5\' 8"'
+            height:'6\' 2"'
           },
            {
             candidateId:"2",
@@ -347,7 +369,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"A",
             category:'boy',
             no:2,
-            height:'5\' 8"'
+            height:'6\''
           },
            {
            candidateId:"3",
@@ -357,7 +379,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"B",
             category:'boy',
             no:3,
-            height:'5\' 8"'
+            height:'5\' 6"'
           },
            {
             candidateId:"4",
@@ -367,7 +389,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"B",
             category:'boy',
             no:4,
-            height:'5\' 8"'
+            height:'5\' 7"'
           },
            {
             candidateId:"5",
@@ -377,7 +399,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"C",
             category:'boy',
             no:5,
-            height:'5\' 8"'
+            height:'5\' 6"'
           },
            {
             candidateId:"6",
@@ -387,7 +409,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"A",
             category:'boy',
             no:6,
-            height:'5\' 8"'
+            height:'5\' 6"'
           },
            {
             candidateId:"7",
@@ -397,7 +419,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"B",
             category:'boy',
             no:7,
-            height:'5\' 8"'
+            height:'5\' 6"'
           },
            {
             candidateId:"8",
@@ -407,7 +429,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"C",
             category:'boy',
             no:8,
-            height:'5\' 8"'
+            height:'5\' 6"'
           },
            {
             candidateId:"9",
@@ -417,7 +439,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"B",
             category:'boy',
             no:9,
-            height:'5\' 8"'
+            height:'5\' 6"'
           },
            {
             candidateId:"10",
@@ -427,7 +449,7 @@ const CustomRightArrow = ({ onClick }) => {
             section:"B",
             category:'boy',
             no:10,
-            height:'5\' 8"'
+            height:'5\' 5"'
           },
          
         ]);
@@ -518,7 +540,7 @@ useEffect(() => {
             <div>
       <form>
      {titles.map((title) => (
-      <div class="radiobtn">
+      <div className="radiobtn">
 		       <input type="radio"
 				  	 name="title"
              value={title}  
@@ -535,11 +557,11 @@ useEffect(() => {
             <button className="close-modal" onClick={toggleModal}>
               X
             </button>
-            <div class="button-wrapper primary">  
-             <button class="button" type="button" onClick={handleVote}>
+            <div className="button-wrapper primary">  
+             <button className="button" type="button" onClick={handleVote}>
                    Vote Him
-               <span class="button-inner-wrapper">    
-               <span class="button-inner"></span>
+               <span className="button-inner-wrapper">    
+               <span className="button-inner"></span>
                </span>
              </button>
 </div>
@@ -554,24 +576,7 @@ useEffect(() => {
           : timeLeft
         }
       </h2>
-      <div class="timer">
-            <div class="sub_timer">
-                <h1 id="day" class="digit">00</h1>
-                <p class="digit_name">Days</p>
-            </div>
-            <div class="sub_timer">
-                <h1 id="hour" class="digit">00</h1>
-                <p class="digit_name">Hours</p>
-            </div>
-            <div class="sub_timer">
-                <h1 id="min" class="digit">00</h1>
-                <p class="digit_name">Minutes</p>
-            </div>
-            <div class="sub_timer">
-                <h1 id="sec" class="digit">00</h1>
-                <p class="digit_name">Seconds</p>
-            </div>
-        </div>
+      
       
     </div>
   );

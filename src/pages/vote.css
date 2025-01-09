@@ -1,0 +1,40 @@
+/* Define the animation for sliding in from top or bottom */
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+        /* Slide from top */
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: translateY(5px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        /* Final position */
+    }
+}
+
+.vote-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.vote-item {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    opacity: 0;
+    animation: slideIn 0.5s ease-out forwards;
+    /* Apply the animation */
+    transition: all 0.3s ease-out;
+}
+
+/* Optional: Add hover effects or other animations as needed */
+.vote-item:hover {
+    background-color: #e0e0e0;
+}

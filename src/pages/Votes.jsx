@@ -11,8 +11,8 @@ const Votes = () => {
     setLoading(true);
     try {
       const response = await database.listDocuments(
-        "676ec63a00199012ab5d",
-        "677b41bb003b1ea20928",
+        "6779a6320039942a4d7c",
+        "677f96960019591e0088",
         [Query.equal("userId", userId)]
       );
       setVotedCandidates(response.documents);
@@ -33,8 +33,8 @@ const Votes = () => {
     try {
 
       await database.deleteDocument(
-        "676ec63a00199012ab5d",
-        "677b41bb003b1ea20928",
+        "6779a6320039942a4d7c",
+        "677f96960019591e0088",
         candidateId
       );
       setVotedCandidates((prevCandidates) =>

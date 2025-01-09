@@ -14,10 +14,35 @@ const responsive = {
 };
 
 
+const CustomRightArrow = ({ onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        position: "absolute",
+        right: "15px",
+        top: "45%",
+        transform: "translateY(-50%)",
+        background: 'rgba(0, 0, 0, 0.5)', /* Transparent background */
+        color: "white",
+        border: "none",
+        borderRadius: "50%",
+        width: "30px",
+        height: "30px",
+        cursor: "pointer",
+        zIndex: modal ? -5 : 7,
+        display: "flex", // Flexbox for centering
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <img src="./images/right-arrow.png" alt="" width={'15px'} height={'15px'}/>
+    </button>
+  );
+};
 
 
-
-const Boy = () => {
+const Girl = () => {
   const [candidates, setCandidates] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [visibleItems, setVisibleItems] = useState(1);
@@ -26,14 +51,35 @@ const Boy = () => {
   const [modal, setModal] = useState(false);
   const [userId,setUserId]=useState(localStorage.getItem('session'));
   const [titles, setTitles] = useState(["Queen", "Attraction", "Cute"]) 
-  const [selectedValue, setSelectedValue] = useState("king");
+  const [selectedValue, setSelectedValue] = useState("Queen");
   const [isVotingOpen, setIsVotingOpen] = useState(false); // Voting status
   const [loading, setLoading] = useState(false);
    const [timeLeft, setTimeLeft] = useState(""); 
    const votingStartTime = new Date("2025-01-07T22:51:00");
-    const votingEndTime = new Date("2025-01-09T12:16:00");
+    const votingEndTime = new Date("2025-01-10T12:16:00");
  // Update visible items based on screen size
- const CustomLeftArrow = ({ onClick }) => {
+  const determineVisibleItems = () => {
+    const width = window.innerWidth;
+    if (width > 1024) {
+      setVisibleItems(3); // SuperLargeDesktop
+    } else if (width > 768) {
+      setVisibleItems(3); // Desktop
+    } else if (width > 464) {
+      setVisibleItems(2); // Tablet
+    } else {
+      setVisibleItems(1); // Mobile
+    }
+  };
+ async function logout() {
+    localStorage.removeItem('session');
+    setUserId(null);
+  }
+ 
+  const handleSlideChange = (currentSlide) => {
+    setActiveIndex(currentSlide);
+  };
+
+const CustomLeftArrow = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
@@ -49,7 +95,7 @@ const Boy = () => {
         width: "30px",
         height: "30px",
         cursor: "pointer",
-         zIndex: modal ? -5 : 7,
+        zIndex: modal ? -5 : 7,
         display: "flex", // Flexbox for centering
         alignItems: "center",
         justifyContent: "center",
@@ -75,7 +121,7 @@ const CustomRightArrow = ({ onClick }) => {
         width: "30px",
         height: "30px",
         cursor: "pointer",
-         zIndex: modal ? -5 : 7,
+        zIndex: modal ? -5 : 7,
         display: "flex", // Flexbox for centering
         alignItems: "center",
         justifyContent: "center",
@@ -85,28 +131,6 @@ const CustomRightArrow = ({ onClick }) => {
     </button>
   );
 };
-  const determineVisibleItems = () => {
-    const width = window.innerWidth;
-    if (width > 1024) {
-      setVisibleItems(3); // SuperLargeDesktop
-    } else if (width > 768) {
-      setVisibleItems(3); // Desktop
-    } else if (width > 464) {
-      setVisibleItems(2); // Tablet
-    } else {
-      setVisibleItems(1); // Mobile
-    }
-  };
- async function logout() {
-    localStorage.removeItem('session');
-    setUserId(null);
-  }
- 
-  const handleSlideChange = (currentSlide) => {
-    setActiveIndex(currentSlide);
-  };
-
-
  const fetchVotedCandidates = async (title) => {
     try {
      
@@ -115,9 +139,9 @@ const CustomRightArrow = ({ onClick }) => {
         "677b41bb003b1ea20928",
         [Query.equal("userId",userId)] //Filter votes by user ID
       );
-      const girls= response.documents.filter(item => item.category=="girl");
+      
+      const girls = response.documents.filter(item => item.category=="girl");
       setVotedCandidates(girls);
-
       const votedTitles = girls.map(item => item.title);
       const availableTitles = titles.filter(title => !votedTitles.includes(title));
       setTitles(availableTitles)
@@ -148,18 +172,40 @@ const CustomRightArrow = ({ onClick }) => {
       name// Adding the selected value
     };
    
-    try {
-
-      const response = await database.createDocument(
-        "676ec63a00199012ab5d", // Replace with your Database ID
-        "677b41bb003b1ea20928", // Replace with your Collection ID
-        "unique()", // Generate a unique document ID
-        votedObj
-      );
-       alert(`You have voted ${name} for ${title} title!`)
-      fetchVotedCandidates(title)
-      
-    } catch (error) {
+     try {
+   
+         const response = await database.createDocument(
+           "6779a6320039942a4d7c", // Replace with your Database ID
+           "677f96960019591e0088", // Replace with your Collection ID
+           "unique()", // Generate a unique document ID
+           votedObj
+         );
+   
+          const candidateDoc = await database.listDocuments(
+           "6779a6320039942a4d7c",
+           "677f97aa0002f6d9402e",
+           [
+             Query.equal("candidateId",candidateId),
+             Query.equal("category", "girl")   
+   
+           ] //Filter votes by user ID
+         );
+           const doc = candidateDoc.documents[0];
+     
+       // Step 3: Update the candidate's count
+           await database.updateDocument(
+              "6779a6320039942a4d7c", // Replace with your Database ID
+              "677f97aa0002f6d9402e", // Replace with your Candidate Collection ID
+              doc.$id, // The document ID of the candidate
+             {
+               votes: doc.votes + 1, // Increment votes by 1
+             }
+       );
+       
+         alert(`You have voted ${name} for ${title} title!`)
+         fetchVotedCandidates(title)
+         
+       } catch (error) {
       console.error("Error creating document:", error);
     }finally{
       setLoading(false)
@@ -197,7 +243,7 @@ const CustomRightArrow = ({ onClick }) => {
      
     
     // Set images based on screen size
-       const updateCandidate = () => {
+      const updateCandidate = () => {
       if (window.innerWidth > 768) {
          setCandidates([
           {
@@ -206,7 +252,7 @@ const CustomRightArrow = ({ onClick }) => {
             name:'Ma Shwe Yee Eaint',
             section:"C",
             category:'girl',
-            height:'5\' 8"',
+            height:'5\' 5"',
             no:1
           },
            {
@@ -216,6 +262,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc:"/images/girls/2-lhho/IMG_50331.JPG",
             name:'Ma Lin Htet Htet Oo',
             section:"A",
+            height:'5\'',
             no:2
             
           },
@@ -226,6 +273,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc:"/images/girls/3-eksl/IMG_50341.JPG",
             name:'Ma Ei Kyal Sin Lin',
             section:"B",
+            height:'5\' 5"',
             no:3
           },
            {
@@ -235,6 +283,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc: "/images/girls/4-kps/IMG_50351.JPG",
             name:'Ma Khin Pyae Sone',
             section:"C",
+             height:'5\' 1"',
             no:4
           },
            {
@@ -244,6 +293,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc:"/images/girls/5-chts/IMG_50371.JPG",
             name:'Ma Chuu Htet Thansin',
             section:"B",
+             height:'5\' 4"',
             no:5
           },
            {
@@ -253,6 +303,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc:"/images/girls/6-yta/IMG_50381.JPG",
             name:'Ma Yoon Thiri Aung',
             section:"B",
+             height:'5\' 5"',
             no:6
           },
            {
@@ -262,6 +313,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc:"/images/girls/7-hmn/IMG_50411.JPG",
             name:'Ma Hsu Myat Nwe',
             section:"B",
+             height:'5\'',
             no:7
           },
            {
@@ -271,6 +323,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc:"/images/girls/8-hhha/IMG_20351.JPG",
             name:'Ma Hnin Htet Htet Aung',
             section:"A",
+             height:'5\' 1"',
             no:8
           },
            {
@@ -280,6 +333,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc: "/images/girls/9-nlp/IMG_50461.JPG",
             name:'Ma Nwe Linn Phyu',
             section:"B",
+             height:'5\'',
             no:9
           },
            {
@@ -289,6 +343,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc:"/images/girls/10-mtw/IMG_50421.JPG",
             name:'Ma Myat Thidar Win',
             section:"A",
+             height:'5\'',
             no:10
           },
          
@@ -303,6 +358,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc:"/images/girls/1-sye/IMG_5028.JPG",
             name:'Ma Shwe Yee Eaint',
             section:"C",
+              height:'5\'',
             no:1
           },
            {
@@ -312,6 +368,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc:"/images/girls/2-lhho/IMG_5033.JPG",
             name:'Ma Lin Htet Htet Oo',
             section:"A",
+             height:'5\' 5"',
             no:2
           },
            {
@@ -321,6 +378,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc:"/images/girls/3-eksl/IMG_5034.JPG",
             name:'Ma Ei Kyal Sin Lin',
             section:"B",
+            height:'5\' 5"',
             no:3
           },
            {
@@ -330,6 +388,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc: "/images/girls/4-kps/IMG_5035.JPG",
             name:'Ma Khin Pyae Sone',
             section:"C",
+             height:'5\' 1"',
             no:4
           },
            {
@@ -339,6 +398,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc:"/images/girls/5-chts/IMG_5037.JPG",
             name:'Ma Chuu Htet Thansin',
             section:"B",
+              height:'5\' 4"',
             no:5
           },
            {
@@ -348,6 +408,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc:"/images/girls/6-yta/IMG_5038.JPG",
             name:'Ma Yoon Thiri Aung',
             section:"B",
+             height:'5\' 5"',
             no:6
           },
            {
@@ -357,6 +418,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc:"/images/girls/7-hmn/IMG_5041.JPG",
             name:'Ma Hsu Myat Nwe',
             section:"B",
+            height:'5\'',
             no:7
           },
            {
@@ -366,6 +428,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc:"/images/girls/8-hhha/IMG_2035.JPG",
             name:'Ma Hnin Htet Htet Aung',
             section:"A",
+             height:'5\' 1"',
             no:8
           },
            {
@@ -375,6 +438,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc: "/images/girls/9-nlp/IMG_5046.JPG",
             name:'Ma Nwe Linn Phyu',
             section:"B",
+             height:'5\'',
             no:9
           },
            {
@@ -384,6 +448,7 @@ const CustomRightArrow = ({ onClick }) => {
             imgSrc:"/images/girls/10-mtw/IMG_5042.JPG",
             name:'Ma Myat Thidar Win',
             section:"A",
+             height:'5\'',
             no:10
           },
          
@@ -451,8 +516,8 @@ useEffect(() => {
           {candidates.map((candidate, index) => (
             <div key={index} style={{ position: "relative" }} className="img-container">
               <img src={candidate.imgSrc} className="carousel-image" alt={`Carousel Item ${index + 1}`} />
-              <button className="voteBtn" onClick={()=>toggleModal(candidate)}  disabled={votedCandidates.some((vote) => vote.candidateId === candidate.candidateId)||!isVotingOpen || votedCandidates.length==3 } >
-                 {votedCandidates.some((vote) => vote.candidateId == candidate.candidateId)||votedCandidates.length==3 ? "Voted" : "Vote"}
+              <button className="voteBtn" onClick={()=>toggleModal(candidate)}  disabled={votedCandidates.some((vote) => vote.candidateId === candidate.candidateId)||!isVotingOpen||votedCandidates.length==3 } >
+                 {votedCandidates.some((vote) => vote.candidateId == candidate.candidateId)|| votedCandidates.length==3 ? "Voted" : "Vote"}
               </button>
               <div
                 className={`carousel-text ${
@@ -461,7 +526,7 @@ useEffect(() => {
               >
                 <p>{candidate.name}</p>
                 <p>Contestant No-{candidate.no}</p>
-                 <p>Height-5' 8"</p>
+                 <p>Height-{candidate.height}</p>
               </div>
              
             </div>
@@ -476,7 +541,7 @@ useEffect(() => {
             <div>
       <form>
      {titles.map((title) => (
-      <div class="radiobtn">
+      <div className="radiobtn">
 		       <input type="radio"
 				  	 name="title"
              value={title}  
@@ -493,14 +558,14 @@ useEffect(() => {
             <button className="close-modal" onClick={toggleModal}>
               X
             </button>
-            <div class="button-wrapper primary">  
-               <button class="button" type="button" onClick={handleVote}>
+            <div className="button-wrapper primary">  
+             <button className="button" type="button" onClick={handleVote}>
                    Vote Her
-               <span class="button-inner-wrapper">    
-               <span class="button-inner"></span>
+               <span className="button-inner-wrapper">    
+               <span className="button-inner"></span>
                </span>
              </button>
-            </div>
+</div>
           </div>
         </div>
       )}
@@ -513,10 +578,11 @@ useEffect(() => {
         }
       </h2>
       
+      
     </div>
   );
 };
 
-export default Boy;
+export default Girl;
 
 

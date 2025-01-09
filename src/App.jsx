@@ -17,36 +17,30 @@ const App = () => {
                  <LoginPage/>
                }
            />
+             
           <Route
               path="/"
               element={
-            
-                 <Boy/>
-              
+                 <ProtectedRoute>    
+                    <Boy/>             
+                </ProtectedRoute>
                }
            />
            <Route
               path="/girl"
               element={
-            
-                 <Girl/>
-              
+               <ProtectedRoute>    
+                    <Girl/>             
+                </ProtectedRoute>
                }
            />
-              <Route
-              path="/girl"
-              element={
-              
-                 <Girl/>
              
-               }
-           />
             <Route
               path="/votes"
               element={
-              
-                 <Votes/>
-               
+              <ProtectedRoute>    
+                    <Votes/>             
+                </ProtectedRoute>
                }
            />
         </Routes>
