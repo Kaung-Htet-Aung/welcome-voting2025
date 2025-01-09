@@ -132,6 +132,7 @@ const CustomRightArrow = ({ onClick }) => {
   );
 };
  const fetchVotedCandidates = async (title) => {
+   setLoading(true);
     try {
      
       const response = await database.listDocuments(
@@ -149,6 +150,8 @@ const CustomRightArrow = ({ onClick }) => {
       
     } catch (err) {
       console.error("Failed to fetch votes:", err);
+    }finally {
+        setLoading(false); // Set loading to false after fetching is complete
     }
   };
 
