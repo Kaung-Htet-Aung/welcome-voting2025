@@ -491,7 +491,7 @@ useEffect(() => {
 
     if (startDiff <= 0) {
       setIsVotingOpen(true);
-      setTimeLeft(`Voting ends in: ${formatTime(endDiff)}`);
+      setTimeLeft(`Voting will end in: ${formatTime(endDiff)}`);
     } else {
       setTimeLeft(formatTime(startDiff));
     }
@@ -518,8 +518,8 @@ useEffect(() => {
           {candidates.map((candidate, index) => (
             <div key={index} style={{ position: "relative" }} className="img-container">
               <img src={candidate.imgSrc} className="carousel-image" alt={`Carousel Item ${index + 1}`} />
-              <button className="voteBtn" onClick={()=>toggleModal(candidate)}  disabled={votedCandidates.some((vote) => vote.candidateId === candidate.candidateId)||!isVotingOpen||votedCandidates.length==3 } >
-                 {votedCandidates.some((vote) => vote.candidateId == candidate.candidateId)|| votedCandidates.length==3 ? "Voted" : "Vote"}
+              <button className="voteBtn" onClick={()=>toggleModal(candidate)}  disabled={votedCandidates.some((vote) => vote.candidateId === candidate.candidateId)||!isVotingOpen||loading==true|| votedCandidates.length==3 } >
+                   {loading ? "Loading...":votedCandidates.some((vote) => vote.candidateId == candidate.candidateId)|| votedCandidates.length==3 ? "Voted" : "Vote"}
               </button>
               <div
                 className={`carousel-text ${
@@ -573,7 +573,7 @@ useEffect(() => {
       )}
       </div>
       
-         <h2 style={{ color: "white", textAlign: 'center' }}>
+         <h2 style={{ color: "white", textAlign: 'center',marginTop:'15px' }}>
          {isVotingOpen
             ? `You can vote now! ${timeLeft}`
           : timeLeft

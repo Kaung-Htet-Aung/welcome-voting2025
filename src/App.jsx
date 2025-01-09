@@ -21,26 +21,26 @@ const App = () => {
           <Route
               path="/"
               element={
-                 <ProtectedRoute>    
+                   
                     <Boy/>             
-                </ProtectedRoute>
+              
                }
            />
            <Route
               path="/girl"
               element={
-               <ProtectedRoute>    
+               
                     <Girl/>             
-                </ProtectedRoute>
+               
                }
            />
              
             <Route
               path="/votes"
               element={
-              <ProtectedRoute>    
+                 
                     <Votes/>             
-                </ProtectedRoute>
+               
                }
            />
         </Routes>

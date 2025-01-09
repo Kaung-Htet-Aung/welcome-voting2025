@@ -132,6 +132,7 @@ const CustomRightArrow = ({ onClick }) => {
   );
 };
  const fetchVotedCandidates = async (title) => {
+   setLoading(true)
     try {
      
       const response = await database.listDocuments(
@@ -149,6 +150,8 @@ const CustomRightArrow = ({ onClick }) => {
       
     } catch (err) {
       console.error("Failed to fetch votes:", err);
+    }finally{
+       setLoading(false)
     }
   };
 
@@ -257,7 +260,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"2",
-            height:'5\' 8"',
+           
             category:'girl',
             imgSrc:"/images/girls/2-lhho/IMG_50331.JPG",
             name:'Ma Lin Htet Htet Oo',
@@ -268,7 +271,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"3",
-            height:'5\' 8"',
+           
             category:'girl',
             imgSrc:"/images/girls/3-eksl/IMG_50341.JPG",
             name:'Ma Ei Kyal Sin Lin',
@@ -278,7 +281,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"4",
-            height:'5\' 8"',
+            
             category:'girl',
             imgSrc: "/images/girls/4-kps/IMG_50351.JPG",
             name:'Ma Khin Pyae Sone',
@@ -288,7 +291,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"5",
-            height:'5\' 8"',
+           
             category:'girl',
             imgSrc:"/images/girls/5-chts/IMG_50371.JPG",
             name:'Ma Chuu Htet Thansin',
@@ -298,7 +301,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"6",
-            height:'5\' 8"',
+            
             category:'girl',
             imgSrc:"/images/girls/6-yta/IMG_50381.JPG",
             name:'Ma Yoon Thiri Aung',
@@ -308,7 +311,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"7",
-            height:'5\' 8"',
+           
             category:'girl',
             imgSrc:"/images/girls/7-hmn/IMG_50411.JPG",
             name:'Ma Hsu Myat Nwe',
@@ -318,7 +321,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"8",
-            height:'5\' 8"',
+           
             category:'girl',
             imgSrc:"/images/girls/8-hhha/IMG_20351.JPG",
             name:'Ma Hnin Htet Htet Aung',
@@ -328,7 +331,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"9",
-            height:'5\' 8"',
+         
             category:'girl',
             imgSrc: "/images/girls/9-nlp/IMG_50461.JPG",
             name:'Ma Nwe Linn Phyu',
@@ -338,7 +341,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"10",
-            height:'5\' 8"',
+           
             category:'girl',
             imgSrc:"/images/girls/10-mtw/IMG_50421.JPG",
             name:'Ma Myat Thidar Win',
@@ -353,7 +356,7 @@ const CustomRightArrow = ({ onClick }) => {
        setCandidates([
           {
             candidateId:"1",
-            height:'5\' 8"',
+           
             category:'girl',
             imgSrc:"/images/girls/1-sye/IMG_5028.JPG",
             name:'Ma Shwe Yee Eaint',
@@ -363,7 +366,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"2",
-            height:'5\' 8"',
+         
             category:'girl',
             imgSrc:"/images/girls/2-lhho/IMG_5033.JPG",
             name:'Ma Lin Htet Htet Oo',
@@ -373,7 +376,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"3",
-            height:'5\' 8"',
+          
             category:'girl',
             imgSrc:"/images/girls/3-eksl/IMG_5034.JPG",
             name:'Ma Ei Kyal Sin Lin',
@@ -383,7 +386,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"4",
-            height:'5\' 8"',
+          
             category:'girl',
             imgSrc: "/images/girls/4-kps/IMG_5035.JPG",
             name:'Ma Khin Pyae Sone',
@@ -393,7 +396,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"5",
-            height:'5\' 8"',
+          
             category:'girl',
             imgSrc:"/images/girls/5-chts/IMG_5037.JPG",
             name:'Ma Chuu Htet Thansin',
@@ -403,7 +406,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"6",
-            height:'5\' 8"',
+           
             category:'girl',
             imgSrc:"/images/girls/6-yta/IMG_5038.JPG",
             name:'Ma Yoon Thiri Aung',
@@ -413,7 +416,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"7",
-            height:'5\' 8"',
+           
             category:'girl',
             imgSrc:"/images/girls/7-hmn/IMG_5041.JPG",
             name:'Ma Hsu Myat Nwe',
@@ -423,7 +426,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"8",
-            height:'5\' 8"',
+          
             category:'girl',
             imgSrc:"/images/girls/8-hhha/IMG_2035.JPG",
             name:'Ma Hnin Htet Htet Aung',
@@ -433,7 +436,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"9",
-            height:'5\' 8"',
+           
             category:'girl',
             imgSrc: "/images/girls/9-nlp/IMG_5046.JPG",
             name:'Ma Nwe Linn Phyu',
@@ -443,7 +446,7 @@ const CustomRightArrow = ({ onClick }) => {
           },
            {
             candidateId:"10",
-            height:'5\' 8"',
+          
             category:'girl',
             imgSrc:"/images/girls/10-mtw/IMG_5042.JPG",
             name:'Ma Myat Thidar Win',
@@ -516,8 +519,8 @@ useEffect(() => {
           {candidates.map((candidate, index) => (
             <div key={index} style={{ position: "relative" }} className="img-container">
               <img src={candidate.imgSrc} className="carousel-image" alt={`Carousel Item ${index + 1}`} />
-              <button className="voteBtn" onClick={()=>toggleModal(candidate)}  disabled={votedCandidates.some((vote) => vote.candidateId === candidate.candidateId)||!isVotingOpen||votedCandidates.length==3 } >
-                 {votedCandidates.some((vote) => vote.candidateId == candidate.candidateId)|| votedCandidates.length==3 ? "Voted" : "Vote"}
+              <button className="voteBtn" onClick={()=>toggleModal(candidate)}  disabled={votedCandidates.some((vote) => vote.candidateId === candidate.candidateId)||!isVotingOpen||loading==true||votedCandidates.length==3 } >
+                   {loading ? "Loading...":votedCandidates.some((vote) => vote.candidateId == candidate.candidateId)|| votedCandidates.length==3 ? "Voted" : "Vote"}
               </button>
               <div
                 className={`carousel-text ${

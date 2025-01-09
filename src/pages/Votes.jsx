@@ -62,8 +62,8 @@ const Votes = () => {
             <tr>
               <th>Name</th>
               <th>Title</th>
-              <th>Date</th>
-              <th>Actions</th>
+              <th>Number</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -71,7 +71,7 @@ const Votes = () => {
               <tr key={candidate.$id}>
                 <td>{candidate.name || "N/A"}</td>
                 <td>{candidate.title || "N/A"}</td>
-                <td>{new Date(candidate.$createdAt).toLocaleDateString()}</td>
+                <td>{candidate.candidateId}</td>
                 <td>
                   <button
                     style={{

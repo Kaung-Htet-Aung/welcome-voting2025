@@ -9,7 +9,7 @@
 .login-container {
     position: relative;
     width: 850px;
-    height: 550px;
+    height: 100vh;
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 0 30px rgba(0, 0, 0, .2);
@@ -264,4 +264,19 @@ form {
     .toggle-panel h1 {
         font-size: 30px;
     }
+}
+
+.input-box {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #888;
 }
