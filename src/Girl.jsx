@@ -42,7 +42,7 @@ const CustomRightArrow = ({ onClick }) => {
 };
 
 
-const Girl = () => {
+const Boy = () => {
   const [candidates, setCandidates] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [visibleItems, setVisibleItems] = useState(1);
@@ -51,11 +51,11 @@ const Girl = () => {
   const [modal, setModal] = useState(false);
   const [userId,setUserId]=useState(localStorage.getItem('session'));
   const [titles, setTitles] = useState(["Queen", "Attraction", "Cute"]) 
-  const [selectedValue, setSelectedValue] = useState("Queen");
+  const [selectedValue, setSelectedValue] = useState("King");
   const [isVotingOpen, setIsVotingOpen] = useState(false); // Voting status
   const [loading, setLoading] = useState(false);
    const [timeLeft, setTimeLeft] = useState(""); 
-   const votingStartTime = new Date("2025-01-10T12:00:00");
+    const votingStartTime = new Date("2025-01-10T12:00:00");
     const votingEndTime = new Date("2025-01-10T15:00:00");
  // Update visible items based on screen size
   const determineVisibleItems = () => {
@@ -132,26 +132,26 @@ const CustomRightArrow = ({ onClick }) => {
   );
 };
  const fetchVotedCandidates = async (title) => {
-   setLoading(true)
+   setLoading(true);
     try {
      
       const response = await database.listDocuments(
-        "676ec63a00199012ab5d",
-        "677b41bb003b1ea20928",
+        "6779a6320039942a4d7c",
+        "677f96960019591e0088",
         [Query.equal("userId",userId)] //Filter votes by user ID
       );
       
-      const girls = response.documents.filter(item => item.category=="girl");
-      setVotedCandidates(girls);
-      const votedTitles = girls.map(item => item.title);
+      const boys = response.documents.filter(item => item.category=="girl");
+      setVotedCandidates(boys);
+      const votedTitles = boys.map(item => item.title);
       const availableTitles = titles.filter(title => !votedTitles.includes(title));
       setTitles(availableTitles)
       setSelectedValue(availableTitles[0])
       
     } catch (err) {
       console.error("Failed to fetch votes:", err);
-    }finally{
-       setLoading(false)
+    }finally {
+        setLoading(false); // Set loading to false after fetching is complete
     }
   };
 
@@ -175,40 +175,40 @@ const CustomRightArrow = ({ onClick }) => {
       name// Adding the selected value
     };
    
-     try {
-   
-         const response = await database.createDocument(
+    try {
+
+      const response = await database.createDocument(
+        "6779a6320039942a4d7c", // Replace with your Database ID
+        "677f96960019591e0088", // Replace with your Collection ID
+        "unique()", // Generate a unique document ID
+        votedObj
+      );
+
+       const candidateDoc = await database.listDocuments(
+        "6779a6320039942a4d7c",
+        "677f97aa0002f6d9402e",
+        [
+          Query.equal("candidateId",candidateId),
+          Query.equal("category", "girl")   
+
+        ] //Filter votes by user ID
+      );
+        const doc = candidateDoc.documents[0];
+  
+    // Step 3: Update the candidate's count
+        await database.updateDocument(
            "6779a6320039942a4d7c", // Replace with your Database ID
-           "677f96960019591e0088", // Replace with your Collection ID
-           "unique()", // Generate a unique document ID
-           votedObj
-         );
-   
-          const candidateDoc = await database.listDocuments(
-           "6779a6320039942a4d7c",
-           "677f97aa0002f6d9402e",
-           [
-             Query.equal("candidateId",candidateId),
-             Query.equal("category", "girl")   
-   
-           ] //Filter votes by user ID
-         );
-           const doc = candidateDoc.documents[0];
-     
-       // Step 3: Update the candidate's count
-           await database.updateDocument(
-              "6779a6320039942a4d7c", // Replace with your Database ID
-              "677f97aa0002f6d9402e", // Replace with your Candidate Collection ID
-              doc.$id, // The document ID of the candidate
-             {
-               votes: doc.votes + 1, // Increment votes by 1
-             }
-       );
-       
-         alert(`You have voted ${name} for ${title} title!`)
-         fetchVotedCandidates(title)
-         
-       } catch (error) {
+           "677f97aa0002f6d9402e", // Replace with your Candidate Collection ID
+           doc.$id, // The document ID of the candidate
+          {
+            votes: doc.votes + 1, // Increment votes by 1
+          }
+    );
+    
+      alert(`You have voted ${name} for ${title} title!`)
+      fetchVotedCandidates(title)
+      
+    } catch (error) {
       console.error("Error creating document:", error);
     }finally{
       setLoading(false)
@@ -246,7 +246,7 @@ const CustomRightArrow = ({ onClick }) => {
      
     
     // Set images based on screen size
-      const updateCandidate = () => {
+     const updateCandidate = () => {
       if (window.innerWidth > 768) {
          setCandidates([
           {
@@ -492,7 +492,7 @@ useEffect(() => {
 
     if (startDiff <= 0) {
       setIsVotingOpen(true);
-      setTimeLeft(`Voting ends in: ${formatTime(endDiff)}`);
+      setTimeLeft(`Voting will end in: ${formatTime(endDiff)}`);
     } else {
       setTimeLeft(formatTime(startDiff));
     }
@@ -519,8 +519,8 @@ useEffect(() => {
           {candidates.map((candidate, index) => (
             <div key={index} style={{ position: "relative" }} className="img-container">
               <img src={candidate.imgSrc} className="carousel-image" alt={`Carousel Item ${index + 1}`} />
-              <button className="voteBtn" onClick={()=>toggleModal(candidate)}  disabled={votedCandidates.some((vote) => vote.candidateId === candidate.candidateId)||!isVotingOpen||loading==true||votedCandidates.length>=3 } >
-                   {loading ? "Loading...":votedCandidates.some((vote) => vote.candidateId == candidate.candidateId)|| votedCandidates.length>=3 ? "Voted" : "Vote"}
+              <button className="voteBtn" onClick={()=>toggleModal(candidate)}  disabled={votedCandidates.some((vote) => vote.candidateId === candidate.candidateId)||!isVotingOpen||loading==true|| votedCandidates.length==3||votedCandidates.length>3 } >
+                   {loading ? "Loading...":votedCandidates.some((vote) => vote.candidateId == candidate.candidateId)|| votedCandidates.length==3||votedCandidates.length>3 ? "Voted" : "Vote"}
               </button>
               <div
                 className={`carousel-text ${
@@ -574,7 +574,7 @@ useEffect(() => {
       )}
       </div>
       
-         <h2 style={{ color: "white", textAlign: 'center' }}>
+         <h2 style={{ color: "white", textAlign: 'center',marginTop:'15px' }}>
          {isVotingOpen
             ? `You can vote now! ${timeLeft}`
           : timeLeft
@@ -586,6 +586,6 @@ useEffect(() => {
   );
 };
 
-export default Girl;
+export default Boy;
 
 
