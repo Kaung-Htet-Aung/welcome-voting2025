@@ -518,8 +518,8 @@ useEffect(() => {
           {candidates.map((candidate, index) => (
             <div key={index} style={{ position: "relative" }} className="img-container">
               <img src={candidate.imgSrc} className="carousel-image" alt={`Carousel Item ${index + 1}`} />
-              <button className="voteBtn" onClick={()=>toggleModal(candidate)}  disabled={votedCandidates.some((vote) => vote.candidateId === candidate.candidateId)||!isVotingOpen||loading==true|| votedCandidates.length==3 } >
-                   {loading ? "Loading...":votedCandidates.some((vote) => vote.candidateId == candidate.candidateId)|| votedCandidates.length==3 ? "Voted" : "Vote"}
+              <button className="voteBtn" onClick={()=>toggleModal(candidate)}  disabled={votedCandidates.some((vote) => vote.candidateId === candidate.candidateId)||!isVotingOpen||loading==true|| votedCandidates.length>=3 } >
+                   {loading ? "Loading...":votedCandidates.some((vote) => vote.candidateId == candidate.candidateId)|| votedCandidates.length>=3 ? "Voted" : "Vote"}
               </button>
               <div
                 className={`carousel-text ${
